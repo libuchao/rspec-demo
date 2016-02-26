@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Post, :type => :model do
+RSpec.describe Post, type: :model do
   it 'is accessible' do
     post = Post.create!(title: 'title')
     expect(post).to eq(Post.last)
