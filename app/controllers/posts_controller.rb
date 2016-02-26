@@ -6,6 +6,10 @@ class PostsController < ApplicationController
   def index
     @posts = Post.all
   end
+  
+  def last_post
+    @posts = Post.last
+  end
 
   # GET /posts/1
   # GET /posts/1.json
