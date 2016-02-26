@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Post, :type => :model do
   it 'is accessible' do
-    post = Post.create!
+    post = Post.create!(title: 'title')
     expect(post).to eq(Post.last)
   end
   
@@ -12,5 +12,29 @@ RSpec.describe Post, :type => :model do
     expect(columns).to include('title')
     expect(columns).to include('content')
     expect(columns).not_to include('user_id')
+  end
+  
+  it 'validates title' do
+    expect(Post.new).not_to be_valid
+    expect(Post.new(title: 'title')).to be_valid
+  end
+  
+  it '.no_content' do
+    post_with_content = Post.create!(title: 'title', content: 'content')
+    post_without_content = Post.create!(title: 'title', content: nil)
+    expect(Post.no_content).to include(post_without_content)
+    expect(Post.no_content).not_to include(post_with_content)
+  end
+  
+  it '#abstract' do
+    post = Post.create!(title: 'title', content: '01234567890123456789_not_abstract')
+    expect(post.abstract).to include('01234567890123456789')
+    expect(post.abstract).not_to include('not_abstract')
+  end
+  
+  it 'has_many comments' do
+    post = Post.create!(title: 'title', content: 'content')
+    comment = Comment.create!(content: 'content', post: post)
+    expect(post.comments).to include(comment)
   end
 end
